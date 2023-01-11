@@ -1,0 +1,3 @@
+min_split: 79
+batch_size: 830
+max_features: 1314

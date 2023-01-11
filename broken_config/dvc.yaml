@@ -1,0 +1,36 @@
+stages:
+  split:
+    cmd: python split.py files.csv files-train.csv files-test.csv
+    deps:
+    - files.csv
+    - split.py
+    outs:
+    - files-test.csv
+    - files-train.csv
+  featurize:
+    cmd: python featurize.py files-train.csv files-train-feats.csv
+    deps:
+    - featurize.py
+    - files-train.csv
+    outs:
+    - files-train-feats.csv
+  train:
+    cmd: python train.py files-train-feats.csv model.json
+    deps:
+    - files-train-feats.csv
+    - train.py
+    params:
+    - epochs
+    - learning_rate
+    - max_depth
+    outs:
+    - model.json
+  evaluate:
+    cmd: python evaluate.py model.json files-test.csv
+    deps:
+    - evaluate.py
+    - files-test.csv
+    - model.json
+    metrics:
+    - metrics.json:
+        cache: false

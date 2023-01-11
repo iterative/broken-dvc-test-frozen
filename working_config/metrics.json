@@ -1,0 +1,1 @@
+{"branch": {"accuracy": 0.6811406238092824, "avg_time": 1.3523042333152744, "non_null": 0.22212583581657486}, "classifier": {"precision": 0.6312809802109332}, "model": {"meanscore": 0.6216831629313118, "size": 2299}, "results": {"errors": 44, "index": 1.8885108423949628}}

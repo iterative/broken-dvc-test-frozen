@@ -1,0 +1,11 @@
+[core]
+    autostage = true 
+    remote = storage 
+
+[hydra]
+    enabled = true 
+    config_dir = stages/config
+    config_name = main
+
+[core]
+    autostage = true

@@ -1,0 +1,65 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python split.py ner.csv ner-train.csv ner-test.csv
+    deps:
+    - path: ner.csv
+      md5: a181e156773daf1620f139fd87d0b9eb
+      size: 1119
+    - path: split.py
+      md5: b3a178d35c7926190fb8bdce5b7681d5
+      size: 713
+    outs:
+    - path: ner-test.csv
+      md5: 012d63ebb79cbf475c14ba8f3c2078d5
+      size: 345
+    - path: ner-train.csv
+      md5: bc0884988797a71c9e7dee2d95fb448b
+      size: 774
+  featurize:
+    cmd: python featurize.py ner-train.csv ner-train-feats.csv
+    deps:
+    - path: featurize.py
+      md5: 7b2a95111520e5fb198f97e83665bb11
+      size: 698
+    - path: ner-train.csv
+      md5: bc0884988797a71c9e7dee2d95fb448b
+      size: 774
+    outs:
+    - path: ner-train-feats.csv
+      md5: 15032bccb83038ca69590b92dd4cc205
+      size: 46
+  train:
+    cmd: python train.py ner-train-feats.csv model.json
+    deps:
+    - path: ner-train-feats.csv
+      md5: 15032bccb83038ca69590b92dd4cc205
+      size: 46
+    - path: train.py
+      md5: bed38c799adf754b3a52f373a4c9356f
+      size: 1126
+    params:
+      params.yaml:
+        batch_size: 830
+        max_features: 1314
+        min_split: 79
+    outs:
+    - path: model.json
+      md5: 4380d38dd5f1c8c7c19872b9705356ba
+      size: 141
+  evaluate:
+    cmd: python evaluate.py model.json ner-test.csv
+    deps:
+    - path: evaluate.py
+      md5: dd5d8fc7f11a4cf789f1e505916132df
+      size: 41718
+    - path: model.json
+      md5: 4380d38dd5f1c8c7c19872b9705356ba
+      size: 141
+    - path: ner-test.csv
+      md5: 012d63ebb79cbf475c14ba8f3c2078d5
+      size: 345
+    outs:
+    - path: metrics.json
+      md5: 155dd25ec912660505d664018450db19
+      size: 272

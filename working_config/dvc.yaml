@@ -1,0 +1,36 @@
+stages:
+  split:
+    cmd: python split.py ner.csv ner-train.csv ner-test.csv
+    deps:
+    - ner.csv
+    - split.py
+    outs:
+    - ner-test.csv
+    - ner-train.csv
+  featurize:
+    cmd: python featurize.py ner-train.csv ner-train-feats.csv
+    deps:
+    - featurize.py
+    - ner-train.csv
+    outs:
+    - ner-train-feats.csv
+  train:
+    cmd: python train.py ner-train-feats.csv model.json
+    deps:
+    - ner-train-feats.csv
+    - train.py
+    params:
+    - batch_size
+    - max_features
+    - min_split
+    outs:
+    - model.json
+  evaluate:
+    cmd: python evaluate.py model.json ner-test.csv
+    deps:
+    - evaluate.py
+    - model.json
+    - ner-test.csv
+    metrics:
+    - metrics.json:
+        cache: false
